@@ -196,5 +196,12 @@ body {
     width: 50%;
 
   }
-
+  .movie-filter {
+   
+    width: 51%;
+    display: flex;
+    flex-direction: column;}
+    #year{
+      width:97%;
+    }
 }
