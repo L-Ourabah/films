@@ -266,7 +266,7 @@ const fetchSearchMovies = async () => {
           {/* Affiche la note du film sous forme d'icône étoile et la note moyenne. */}
           <p className='note'>⭐ {movie.vote_average}</p>
           {/* Affiche le nombre de votants pour le film. */}
-          <p className='vote'>Nombre de votants {movie.vote_count}</p>
+          <p className='vote'>Votants {movie.vote_count}</p>
         </li>
       ))}
     </ul>
@@ -288,7 +288,7 @@ const fetchSearchMovies = async () => {
                   onClick={() => handleMovieSelect(movie)}
                 />
                 <p className='note'>⭐ {movie.vote_average}</p>
-                <p className='vote'>Nombre de votants {movie.vote_count}</p>
+                <p className='vote'>Votants {movie.vote_count}</p>
               </li>
             ))}
           </ul>

@@ -61,7 +61,7 @@ function MovieFilter({
           placeholder="Enter a year"
         />
       </div>
-      <button className='btn-fitre' onClick={onFilterSubmit}>🎚️</button>
+      <button className='btn-filtre' onClick={onFilterSubmit}>🎚️</button>
     </div>
   );
 }
