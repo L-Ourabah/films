@@ -1,9 +1,9 @@
 // src/components/MovieDetail.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate ,useLocation} from 'react-router-dom';
 import MovieSuggestion from './MovieSuggestion';
-import './MovieDetail.css'; 
+import './MovieDetail.css';
 import Noimage from '../images/no.png'
 
 function MovieDetail() {
@@ -13,6 +13,32 @@ function MovieDetail() {
   const apiKey = 'e79dc636a1494368d1855e984c4fdd2d';
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation()
+
+  const movieId = location.pathname.split("/")[2]
+  const options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer ' + apiKey
+    }
+};
+
+
+const [actors, setActors] = useState({})
+const getActors = () => {
+  const fetch = require('node-fetch');
+
+  const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
+
+  fetch(url, options)
+      .then(res => res.json())
+      .then(json => {
+          setActors(json)
+      })
+      .catch(err => console.error('error:' + err));
+}
+
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -58,9 +84,9 @@ function MovieDetail() {
           <div className="movie-detail-content">
             <div className="movie-detail-poster">
               <img
-                 src={movie.poster_path
+                src={movie.poster_path
                   ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : {Noimage}}
+                  : { Noimage }}
                 alt={movie.title}
 
 
@@ -69,14 +95,15 @@ function MovieDetail() {
             <div className="movie-detail-info">
               <p className="movie-detail-description">{movie.overview}</p>
               <div className="movie-detail-info-secondaire">
-              <p>Année : {movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</p>
-              <p>Réalisateur : {movie.director ? movie.director : 'N/A'}</p>
-              <p>Acteurs : {movie.actors ? movie.actors.join(', ') : 'N/A'}</p>
+                <p>Année : {movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</p>
+                <p>Réalisateur : {movie.director ? movie.director : 'N/A'}</p>
+                <p>Acteurs : {movie.actors ? movie.actors.join(', ') : 'N/A'}</p>
 
-             
+
               </div>
             </div>
           </div>
+          
           {trailerKey && (
             <div className="movie-trailer">
               <h3>Bande-annonce</h3>
@@ -90,7 +117,17 @@ function MovieDetail() {
               ></iframe>
             </div>
           )}
-
+          <div className="actor-list">
+                        <div> <h3>CAST</h3> </div>
+                        <div className="wrap-actor">
+                            {actors.cast ? actors.cast.map((actor) => (
+                                <div className="actor-display" key={actor.id}>
+                                    <p>{actor.name}</p>
+                                    {actor.profile_path && <img src={`https://image.tmdb.org/t/p/w780${actor.profile_path}`} alt={actor.name} />}
+                                </div>
+                            )) : ""}
+                        </div>
+                    </div>
           {/* Suggestions de films similaires */}
           {suggestedMovies.length > 0 && (
             <div className="suggested-movies">
@@ -102,6 +139,8 @@ function MovieDetail() {
               </div>
             </div>
           )}
+
+
           <div className="navigation">
 
             {/* Bouton de retour vers la page de recherche */}
