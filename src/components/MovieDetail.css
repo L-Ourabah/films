@@ -1,6 +1,6 @@
 /* src/components/MovieDetail.css */
 .movie-detail {
-  
+
 
 
   padding: 20px;
@@ -20,10 +20,11 @@
   height: 300px;
 }
 
-.movie-detail-poster{
+.movie-detail-poster {
   width: 20%;
   height: 300px;
 }
+
 .movie-detail-poster img {
   max-height: 100%;
   width: 100%;
@@ -37,26 +38,30 @@
   width: 70%;
   gap: 5%;
 }
-.movie-detail-info-secondaire{
+
+.movie-detail-info-secondaire {
   display: flex;
   gap: 5%;
 }
+
 .movie-detail-description {
   font-size: 2em;
 }
 
 .movie-trailer {
   margin-top: 20px;
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.movie-trailer iframe{
+
+.movie-trailer iframe {
   width: 80%;
   height: 250px;
-  
+
 }
+
 .suggested-movies {
   margin-top: 20px;
 }
@@ -80,12 +85,14 @@ flex-direction: column;
   max-width: 150px;
   width: 100%;
 }
-.navigation{
- 
-  display:flex;
+
+.navigation {
+
+  display: flex;
   justify-content: center;
-  gap:5%;
+  gap: 5%;
 }
+
 .next-button,
 .home-button,
 .back-button {
@@ -102,4 +109,18 @@ flex-direction: column;
 
 .back-button:hover {
   background-color: #ff0000;
+}
+
+@media (max-width:760px) {
+
+  .movie-detail-description {
+    font-size: 0.7em;
+  }
+
+  .movie-detail-poster {
+    width: 28%;
+    height: 304px;
+    padding: 11px;
+    margin-top: 11%;
+  }
 }
