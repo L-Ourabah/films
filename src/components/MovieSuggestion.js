@@ -32,6 +32,7 @@ function MovieSuggestion({ movie }) {
       <h4>{movie.title}</h4>
       </div>
     </div>
+    
   );
 }
 
