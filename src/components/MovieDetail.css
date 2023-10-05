@@ -131,7 +131,14 @@
 .back-button:hover {
   background-color: #ff0000;
 }
-
+.actor-display img{
+  height: 150px;
+  width: auto;
+}
+.wrap-actor{
+  display:flex   ;
+  flex-wrap: wrap;
+}
 @media (max-width:760px) {
 
   .movie-detail-description {

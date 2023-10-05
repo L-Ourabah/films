@@ -1,44 +1,39 @@
-// src/components/MovieDetail.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate ,useLocation} from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import MovieSuggestion from './MovieSuggestion';
 import './MovieDetail.css';
-import Noimage from '../images/no.png'
+import NoImage from '../images/no.png'; // Assurez-vous que le chemin est correct
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
   const [suggestedMovies, setSuggestedMovies] = useState([]);
   const apiKey = 'e79dc636a1494368d1855e984c4fdd2d';
+  const apiKey2 ='eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNzlkYzYzNmExNDk0MzY4ZDE4NTVlOTg0YzRmZGQyZCIsInN1YiI6IjY1MTRhNDM4ZWE4NGM3MDBjYTA1ZGY5YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Y7pTEXn9GQRDWZH9t8qCNn0mQLHhnVY2ge_DU5I1aOs'
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation()
+  const [actors, setActors] = useState({});
 
-  const movieId = location.pathname.split("/")[2]
-  const options = {
-    method: 'GET',
-    headers: {
-        accept: 'application/json',
-        Authorization: 'Bearer ' + apiKey
+  const location = useLocation();
+  const movieId = location.pathname.split("/")[2];
+  console.log(movieId)
+  const getActors = async () => {
+    const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer ' + apiKey2,
+        },
+      });
+
+      setActors(response.data);
+    } catch (error) {
+      console.error('Error fetching actor data:', error);
     }
-};
-
-
-const [actors, setActors] = useState({})
-const getActors = () => {
-  const fetch = require('node-fetch');
-
-  const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
-
-  fetch(url, options)
-      .then(res => res.json())
-      .then(json => {
-          setActors(json)
-      })
-      .catch(err => console.error('error:' + err));
-}
-
+  };
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -67,14 +62,14 @@ const getActors = () => {
         );
 
         setSuggestedMovies(similarMoviesResponse.data.results);
-        console.log(response.data)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchMovieDetails();
-  }, [id, apiKey]);
+    getActors(); // Appel de la fonction getActors
+  }, [id, apiKey, movieId],apiKey2);
 
   return (
     <div className="movie-detail">
@@ -86,10 +81,8 @@ const getActors = () => {
               <img
                 src={movie.poster_path
                   ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : { Noimage }}
+                  : NoImage} // Utilisation de NoImage ici
                 alt={movie.title}
-
-
               />
             </div>
             <div className="movie-detail-info">
@@ -97,13 +90,11 @@ const getActors = () => {
               <div className="movie-detail-info-secondaire">
                 <p>Année : {movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}</p>
                 <p>Réalisateur : {movie.director ? movie.director : 'N/A'}</p>
-                <p>Acteurs : {movie.actors ? movie.actors.join(', ') : 'N/A'}</p>
-
-
+                <p>Acteurs : {actors.cast ? actors.cast.map(actor => actor.name).join(', ') : 'N/A'}</p>
               </div>
             </div>
           </div>
-          
+
           {trailerKey && (
             <div className="movie-trailer">
               <h3>Bande-annonce</h3>
@@ -118,16 +109,25 @@ const getActors = () => {
             </div>
           )}
           <div className="actor-list">
-                        <div> <h3>CAST</h3> </div>
-                        <div className="wrap-actor">
-                            {actors.cast ? actors.cast.map((actor) => (
-                                <div className="actor-display" key={actor.id}>
-                                    <p>{actor.name}</p>
-                                    {actor.profile_path && <img src={`https://image.tmdb.org/t/p/w780${actor.profile_path}`} alt={actor.name} />}
-                                </div>
-                            )) : ""}
-                        </div>
+            <div>
+              <h3>CAST</h3>
+            </div>
+            <div className="wrap-actor">
+              {actors.cast
+                ? actors.cast.map((actor) => (
+                    <div className="actor-display" key={actor.id}>
+                      <p>{actor.name}</p>
+                      {actor.profile_path && (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w780${actor.profile_path}`}
+                          alt={actor.name}
+                        />
+                      )}
                     </div>
+                  ))
+                : ""}
+            </div>
+          </div>
           {/* Suggestions de films similaires */}
           {suggestedMovies.length > 0 && (
             <div className="suggested-movies">
@@ -140,16 +140,11 @@ const getActors = () => {
             </div>
           )}
 
-
           <div className="navigation">
-
             {/* Bouton de retour vers la page de recherche */}
-            <button className="back-button" onClick={() => navigate(-1)}>Precedent</button>
-
-            <button className="home-button" onClick={() => navigate('/')} >Home </button>
-
+            <button className="back-button" onClick={() => navigate(-1)}>Précédent</button>
+            <button className="home-button" onClick={() => navigate('/')}>Accueil</button>
             <button className="next-button" onClick={() => navigate(+1)}>Suivant</button>
-
           </div>
         </div>
       )}
@@ -158,4 +153,5 @@ const getActors = () => {
 }
 
 export default MovieDetail;
+
 
