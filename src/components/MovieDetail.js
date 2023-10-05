@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import MovieSuggestion from './MovieSuggestion';
 import './MovieDetail.css'; 
-
+import Noimage from '../images/no.png'
 
 function MovieDetail() {
   const [movie, setMovie] = useState(null);
@@ -58,9 +58,9 @@ function MovieDetail() {
           <div className="movie-detail-content">
             <div className="movie-detail-poster">
               <img
-                src={movie.poster_path
+                 src={movie.poster_path
                   ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : '../images/no.png'}
+                  : {Noimage}}
                 alt={movie.title}
 
 

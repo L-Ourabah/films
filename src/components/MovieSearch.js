@@ -6,6 +6,7 @@ import axios from 'axios'; // Import d'axios pour effectuer des requêtes HTTP.
 import { useNavigate } from 'react-router-dom'; // Import de `useNavigate` depuis 'react-router-dom' pour la navigation.
 import MovieFilter from './MovieFilter'; // Import du composant MovieFilter depuis le fichier local.
 import './MovieSearch.css'; // Import du fichier de styles CSS pour ce composant.
+import Noimage from '../images/no.png'
 
 // Déclaration du composant fonctionnel MovieSearch.
 function MovieSearch() {
@@ -259,7 +260,9 @@ const fetchSearchMovies = async () => {
 
           {/* Affiche l'image du film en utilisant l'URL de base de l'affiche (poster_path). */}
           <img
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            src={movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+              : {Noimage}}
             alt={movie.title}
             onClick={() => handleMovieSelect(movie)} // Gère le clic sur l'image pour afficher les détails du film.
           />

@@ -10,9 +10,10 @@
 h1 {
   font-family: 'Diplomata SC', cursive, sans-serif;
   color: #ba0f1a;
-
-
-}
+  background-color: aliceblue;
+  padding: 1%;
+  border: none;
+  border-radius: 10px;}
 
 p,
 h3,
@@ -193,9 +194,7 @@ body {
   width:97%;
   height: 45%;
 }
-.movie-suggestion h4{
-  font-size: 1.2em;
-}
+
 /* Responsive */
 
 
@@ -222,6 +221,7 @@ body {
   }
   .movie-search h1 {
     font-size: 2.5rem;
+    width: 69%;
    
 }
 .movie-search ul {
