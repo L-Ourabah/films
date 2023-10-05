@@ -286,7 +286,9 @@ const fetchSearchMovies = async () => {
                 <h3>{movie.title}</h3>
 
                 <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                   src={movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    : {Noimage}}
                   alt={movie.title}
                   onClick={() => handleMovieSelect(movie)}
                 />
